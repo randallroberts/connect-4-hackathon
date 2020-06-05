@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './Cell.scss';
 
-function Cell(props) {
+class Cell extends Component {
+    constructor(props) {
+        super(props);
   
-  function determineColour (playerNumber) {
+        this.state = {
+            color: 'white'
+        }
+    }
+  
+  determineColor (playerTurn) {
     
     let color = 'white';
     
-    switch(playerNumber) {
+    switch(playerTurn) {
         case 0: {
           color = 'yellow'
           break;
@@ -22,13 +29,33 @@ function Cell(props) {
 
       return color;
   }
-  
-  return (
-    <div className="cell" style={{backgroundColor: determineColour(props.playerNumber)}}>
-      {/* //img? */}
-      P{props.playerNumber}
-    </div>
-  );
+
+  changeColor() {
+
+    console.log("Cell State:", this.state);
+    console.log("Cell Props:", this.props);
+    
+    //if bottom cell is Bottom-most playable cell in that column and empty, change colour to this player's colour
+    if ((this.props.isBottom) && (this.state.color === "white" )) {
+        this.setState( {
+            color: this.determineColor(this.props.playerTurn)
+        })
+    } else {
+        //this isn't the lowest cell in the column, we need to notify the player somehow
+        console.error("Click lower cell");
+    }
+    //this will go back to Board and finish the player's turn
+    this.props.finishPlayerTurn();
+  }
+
+  render () {
+    return (
+        <div onClick={this.changeColor.bind(this)} className="cell" style={{backgroundColor: this.state.color}}>
+        {/* //img? */}
+        {(this.props.playerNumber >=0) ? this.props.playerNumber : `X:${this.props.xCoord} Y:${this.props.yCoord}`}
+        </div>
+    );
+  }
 }
 
 export default Cell;
