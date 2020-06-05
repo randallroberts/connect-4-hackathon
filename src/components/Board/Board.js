@@ -119,10 +119,6 @@ class Board extends Component {
         }
     }
 
-    componentDidMount() {
-        this.makeBoard();
-    }
-
     render() {
         return (
             <>

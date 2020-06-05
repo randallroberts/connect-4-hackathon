@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from './components/Board';
 
-import './App.css';
+import './App.scss';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <header>
         <h1>Tarek & Randall's Connect 4 Adventure</h1>
       </header>
-      <main>
+      <main className="main">
         <Board />
       </main>
     </div>
