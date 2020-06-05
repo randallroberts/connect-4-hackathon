@@ -125,6 +125,7 @@ class Board extends Component {
 
     render() {
         return (
+            <>
             <div className="board">
             
             {/* Render a 2d array of cell components*/}
@@ -154,6 +155,12 @@ class Board extends Component {
             })}
 
         </div>
+        <div className="board-settings">
+            <div className="board-settings__row"><div className="board-settings__label">Number of Players:</div> <input type="text" value={this.numPlayers}></input></div>
+            <div className="board-settings__row"><div className="board-settings__label">Number of Rows:</div> <input type="text" value={this.boardRows}></input></div>
+            <div className="board-settings__row"><div className="board-settings__label">Number of Columns:</div> <input type="text" value={this.boardColumns}></input></div>
+        </div>
+        </>
         );
     }
 }

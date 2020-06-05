@@ -15,4 +15,26 @@
         flex-direction: row;
         flex-wrap: nowrap;
     }
+
+    &-settings {
+        border: 1px solid black;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        margin: 20px auto;
+        padding: 15px;
+        width: fit-content;
+
+        &__row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        &__label {
+            margin-right: 15px;
+        }
+    }
 }
