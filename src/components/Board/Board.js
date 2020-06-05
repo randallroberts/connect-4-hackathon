@@ -19,9 +19,31 @@ class Board extends Component {
         }
     }
 
-
     isSolved() {
-        console.log("Determining if game is finished")
+        
+        // let rowCount = 0;
+        // let prevVal = -1;
+        // let colCount = 0;
+        // let diagCount = 0;
+
+        // //for each row in the board
+        // for (let x = 0; x< this.boardRows; x++) {
+            
+        //     //for each column
+        //     for (let y = 0; y < this.boardColumns; y++) {
+        //         console.log("Win Check:", this.state.cells[x][y], this.state.whoseTurn);
+        //         if (this.state.cells[x][y] === this.state.whoseTurn) {
+        //             rowCount++;
+        //             if (rowCount === 4) return true;
+        //         } else {
+        //             rowCount = 0;
+        //         }
+                
+        //     }
+            
+        // }
+
+        return false;
     }
 
     determineHeight() {
@@ -41,8 +63,6 @@ class Board extends Component {
             }
             return column;
         });
-
-        console.log("Change Height: ", newArr);
 
         return newArr;
     }
@@ -76,8 +96,9 @@ class Board extends Component {
     }
 
     changePlayerTurn(x) {
+
         let turnNum = this.state.whoseTurn + 1;
-        
+    
         if (turnNum > this.numPlayers -1) {
             turnNum = 0;
         }
@@ -85,8 +106,8 @@ class Board extends Component {
         this.setState({
             whoseTurn: turnNum,
             height: this.changeHeight(x)
-        }, () => console.log("Turn change to: ", this.state.whoseTurn))
-        
+        }, () => this.isSolved);
+
     }
 
     cellExists (x, y) {
@@ -132,10 +153,9 @@ class Board extends Component {
                 )
             })}
 
-          </div>
+        </div>
         );
-      }
     }
+}
     
 export default Board;
-    

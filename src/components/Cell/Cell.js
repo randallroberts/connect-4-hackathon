@@ -32,8 +32,8 @@ class Cell extends Component {
 
   changeColor() {
 
-    console.log("Cell State:", this.state);
-    console.log("Cell Props:", this.props);
+    // console.log("Cell State:", this.state);
+    // console.log("Cell Props:", this.props);
     
     //if bottom cell is Bottom-most playable cell in that column and empty, change colour to this player's colour
     if ((this.props.isBottom) && (this.state.color === "white" )) {
