@@ -14,13 +14,37 @@ class Board extends Component {
 
         this.state = {
             cells: this.makeBoard(), //x and y coordinates
-            whoseTurn: 0 //eg: 2 player game, this will count from 0, 1, 0, 1...
+            whoseTurn: 0, //eg: 2 player game, this will count from 0, 1, 0, 1...
+            height: this.determineHeight()
         }
     }
 
 
     isSolved() {
         console.log("Determining if game is finished")
+    }
+
+    determineHeight() {
+        let heightArr = [];
+
+        for (let i = 0; i < this.boardColumns; i++) {
+            heightArr.push(this.boardRows-1);
+        }
+        return heightArr;
+    }
+
+    changeHeight(x) {
+        let newArr = this.state.height.map((column, key) => {
+            
+            if (key === x) {
+                return column-1;
+            }
+            return column;
+        });
+
+        console.log("Change Height: ", newArr);
+
+        return newArr;
     }
 
     makeBoard() {
@@ -41,25 +65,17 @@ class Board extends Component {
     }
 
     isBottomCell(x, y) {
-        return true;
 
-        // console.log(this.state, x, y);
-        // // If the cell exists
-        // if ((this.state.cells[x]) && (this.state.cells[x][y])) {
-        // //Is the current cell white (ie: available)?
-        // if (this.state.cells[x][y] === -1) {
-        //     //Are we at the bottom? Then it's playable
-        //     if (y === this.state.cells.length-1) {
-        //         return true;
-        //     //if we're not at the bottom, is the next row down already filled?
-        //     } else if (this.state.cells[x][y+1] !== -1) {
+        //if the cell is white, and y === current height of that column, it's playable
+        if (y === this.state.height[x]) {
+            //console.log("We are at the top of the stack");
+            return true;
+        }
 
-        //     }
-        // }
+        return false;
     }
 
-    changePlayerTurn() {
-        console.log("I am here", this.state.whoseTurn);
+    changePlayerTurn(x) {
         let turnNum = this.state.whoseTurn + 1;
         
         if (turnNum > this.numPlayers -1) {
@@ -67,8 +83,9 @@ class Board extends Component {
         }
 
         this.setState({
-            whoseTurn: turnNum
-        }, () => console.log(this.state.whoseTurn))
+            whoseTurn: turnNum,
+            height: this.changeHeight(x)
+        }, () => console.log("Turn change to: ", this.state.whoseTurn))
         
     }
 
@@ -101,7 +118,7 @@ class Board extends Component {
                                 //output the cell value (the player that 'owns' the cell)
                                 //else -1 (no one owns the cell, display it as empty)
                                 return (<Cell
-                                    key={x}
+                                    key={x + ((y*this.boardColumns))}
                                     playerTurn = {this.state.whoseTurn}
                                     finishPlayerTurn={this.changePlayerTurn.bind(this)}
                                     xCoord={x}

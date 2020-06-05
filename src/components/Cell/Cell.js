@@ -40,19 +40,19 @@ class Cell extends Component {
         this.setState( {
             color: this.determineColor(this.props.playerTurn)
         })
+        //this will go back to Board and finish the player's turn
+        this.props.finishPlayerTurn(this.props.xCoord);
     } else {
         //this isn't the lowest cell in the column, we need to notify the player somehow
-        console.error("Click lower cell");
-    }
-    //this will go back to Board and finish the player's turn
-    this.props.finishPlayerTurn();
+        console.error("This is not a playable cell");
+    }    
   }
 
   render () {
     return (
         <div onClick={this.changeColor.bind(this)} className="cell" style={{backgroundColor: this.state.color}}>
         {/* //img? */}
-        {(this.props.playerNumber >=0) ? this.props.playerNumber : `X:${this.props.xCoord} Y:${this.props.yCoord}`}
+        {/* {(this.props.playerNumber >=0) ? this.props.playerNumber : `X:${this.props.xCoord} Y:${this.props.yCoord}`} */}
         </div>
     );
   }
