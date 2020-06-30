@@ -67,7 +67,7 @@ class Board extends Component {
         for (let x=0; x<this.boardRows-3; x++) {
             console.log("Start diag check");
             for (let i=0; (i<this.boardColumns && x+i < this.boardRows); i++) {
-                console.log(`[${x+i}, ${i}]: ${cells[x+i][i]}`)
+                // console.log(`[${x+i}, ${i}]: ${cells[x+i][i]}`)
                 if (cells[x+i][x] === this.state.whoseTurn) {
                     count++;
                     
@@ -141,7 +141,9 @@ class Board extends Component {
             return row.slice();
         });
 
-        newCells[x][this.state.height[x]] = this.state.whoseTurn;
+        console.log("newCells:", x, newCells[x])
+        console.log("State Cells:", x, this.state.cells)
+        newCells[this.state.height[x]][x] = this.state.whoseTurn;
 
         if (this.isSolved(newCells)) {
             alert("Congratulations to Player " + this.state.whoseTurn + "! You won!");
@@ -151,7 +153,7 @@ class Board extends Component {
             cells: newCells.map(row => {
                 return row.slice()
             }),
-            whoseTurn: (this.state.whoseTurn + 1 > this.numPlayers -1) ? 0 : this.state.whoseTurn + 1,
+            whoseTurn: (this.state.whoseTurn + 1 >= this.numPlayers) ? 0 : this.state.whoseTurn + 1,
             height: this.changeHeight(x)
         });
 
@@ -188,7 +190,7 @@ class Board extends Component {
                                     finishPlayerTurn={this.changePlayerTurn.bind(this)}
                                     xCoord={x}
                                     yCoord={y}
-                                    playerNumber={this.cellExists(x, y) ? this.state.cells[x][y] : -1}
+                                    playerNumber={this.cellExists(x, y) ? this.state.cells[y][x] : -1}
                                     isBottom={this.isBottomCell(x, y)}
                                 />)
                             })

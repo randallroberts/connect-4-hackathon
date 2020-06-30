@@ -37,6 +37,8 @@ class Cell extends Component {
         this.setState( {
             color: this.determineColor(this.props.playerTurn)
         })
+
+        console.log(this.props.xCoord, this.props.yCoord);
         //this will go back to Board and finish the player's turn
         this.props.finishPlayerTurn(this.props.xCoord);
     } else {
@@ -48,7 +50,6 @@ class Cell extends Component {
   render () {
     return (
         <div onClick={this.changeColor.bind(this)} className="cell" style={{backgroundColor: this.state.color}}>
-        {/* //img? */}
         {(this.props.playerNumber >=0) ? this.props.playerNumber : `X:${this.props.xCoord} Y:${this.props.yCoord}`}
         </div>
     );
