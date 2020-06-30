@@ -5,7 +5,7 @@ import './Board.scss';
 class Board extends Component {
     constructor(props) {
         super(props);
-  
+
         //Game Settings
         this.numPlayers = 2;
         //Six rows, 7 columns by default
@@ -19,29 +19,59 @@ class Board extends Component {
         }
     }
 
+    checkRow(arr) {
+        let count = 0;
+        for (let i=0; i<arr.length; i++) {
+            //If the cell is a player owned spot, start counting to 4
+            if (arr[i] === this.state.whoseTurn) {
+                count++;
+            //If it's not player owned, reset the count because we don't have 4 in a row (yet)
+            } else {
+                count = 0;
+            }
+
+            //If we see 4 player owned cells in a row, return true (game is solved)
+            if (count >= 4) {
+                return true;
+            }
+        }
+
+        //If we don't see a count of 4, return false (game is not solved)
+        return false;
+    }
+
+
     isSolved() {
         
-        // let rowCount = 0;
-        // let prevVal = -1;
-        // let colCount = 0;
-        // let diagCount = 0;
+        let solvedFlag = false;
 
-        // //for each row in the board
-        // for (let x = 0; x< this.boardRows; x++) {
-            
-        //     //for each column
-        //     for (let y = 0; y < this.boardColumns; y++) {
-        //         console.log("Win Check:", this.state.cells[x][y], this.state.whoseTurn);
-        //         if (this.state.cells[x][y] === this.state.whoseTurn) {
-        //             rowCount++;
-        //             if (rowCount === 4) return true;
-        //         } else {
-        //             rowCount = 0;
-        //         }
+        console.log("Start check");
+
+        for (let x = 0; x< this.boardRows; x++) {
+            //for each row in the board, check for 4 in a row
+            solvedFlag = this.checkRow(this.state.cells[x]);
+
+            if (solvedFlag)
+                return true;
+
+
+            console.log(this.state.cells[x].map(colCell => {
+                return colCell;
+            }));    
+            //Check each column in the board for 4 in a row
+            // solvedFlag = this.checkRow(
                 
-        //     }
+            // );
+
+            // if (solvedFlag)
+            //     return true;
+
+        }
+
+        //for each column in the board, check for 4 in a row
+        for (let y = 0; y< this.boardColumns; y++) {
             
-        // }
+        }
 
         return false;
     }
@@ -97,16 +127,24 @@ class Board extends Component {
 
     changePlayerTurn(x) {
 
-        let turnNum = this.state.whoseTurn + 1;
-    
-        if (turnNum > this.numPlayers -1) {
-            turnNum = 0;
-        }
+        //update value of the cell to the player's identity
+        let newCells = this.state.cells.map(row => {
+            return row.slice();
+        });
+
+        newCells[this.state.height[x]][x] = this.state.whoseTurn;
+
+        this.isSolved();
 
         this.setState({
-            whoseTurn: turnNum,
+            cells: newCells.map(row => {
+                return row.slice()
+            }),
+            whoseTurn: (this.state.whoseTurn + 1 > this.numPlayers -1) ? 0 : this.state.whoseTurn + 1,
             height: this.changeHeight(x)
-        }, () => this.isSolved);
+        }, console.log(this.state.cells, x, this.state.height));
+
+        
 
     }
 
