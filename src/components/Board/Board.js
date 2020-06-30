@@ -40,40 +40,28 @@ class Board extends Component {
         return false;
     }
 
-
-    isSolved() {
+    isSolved(cells) {
         
         let solvedFlag = false;
 
-        console.log("Start check");
-
         for (let x = 0; x< this.boardRows; x++) {
             //for each row in the board, check for 4 in a row
-            solvedFlag = this.checkRow(this.state.cells[x]);
+            solvedFlag = this.checkRow(cells[x]);
 
             if (solvedFlag)
-                return true;
+                return ("Row", true);
 
-
-            console.log(this.state.cells[x].map(colCell => {
-                return colCell;
-            }));    
             //Check each column in the board for 4 in a row
-            // solvedFlag = this.checkRow(
-                
-            // );
+            solvedFlag = this.checkRow(
+                cells.map(colCell => {
+                    return colCell[x];
+                })
+            );
 
-            // if (solvedFlag)
-            //     return true;
-
+            if (solvedFlag)
+                return ("Col", true);
         }
-
-        //for each column in the board, check for 4 in a row
-        for (let y = 0; y< this.boardColumns; y++) {
-            
-        }
-
-        return false;
+        return (false);
     }
 
     determineHeight() {
@@ -118,7 +106,6 @@ class Board extends Component {
 
         //if the cell is white, and y === current height of that column, it's playable
         if (y === this.state.height[x]) {
-            //console.log("We are at the top of the stack");
             return true;
         }
 
@@ -134,7 +121,7 @@ class Board extends Component {
 
         newCells[this.state.height[x]][x] = this.state.whoseTurn;
 
-        this.isSolved();
+        console.log(this.isSolved(newCells));
 
         this.setState({
             cells: newCells.map(row => {
@@ -142,9 +129,7 @@ class Board extends Component {
             }),
             whoseTurn: (this.state.whoseTurn + 1 > this.numPlayers -1) ? 0 : this.state.whoseTurn + 1,
             height: this.changeHeight(x)
-        }, console.log(this.state.cells, x, this.state.height));
-
-        
+        });
 
     }
 
