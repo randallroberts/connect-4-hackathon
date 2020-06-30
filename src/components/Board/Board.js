@@ -19,7 +19,7 @@ class Board extends Component {
         }
     }
 
-    checkRow(arr) {
+    checkForWin(arr) {
         let count = 0;
         for (let i=0; i<arr.length; i++) {
             //If the cell is a player owned spot, start counting to 4
@@ -46,13 +46,13 @@ class Board extends Component {
 
         for (let x = 0; x< this.boardRows; x++) {
             //for each row in the board, check for 4 in a row
-            solvedFlag = this.checkRow(cells[x]);
+            solvedFlag = this.checkForWin(cells[x]);
 
             if (solvedFlag)
                 return ("Row", true);
 
             //Check each column in the board for 4 in a row
-            solvedFlag = this.checkRow(
+            solvedFlag = this.checkForWin(
                 cells.map(colCell => {
                     return colCell[x];
                 })
@@ -61,6 +61,28 @@ class Board extends Component {
             if (solvedFlag)
                 return ("Col", true);
         }
+
+        let count = 0;
+        //Check diagonals for 4 in a row:
+        for (let x=0; x<this.boardRows-3; x++) {
+            console.log("Start diag check");
+            for (let i=0; (i<this.boardColumns && x+i < this.boardRows); i++) {
+                console.log(`[${x+i}, ${i}]: ${cells[x+i][i]}`)
+                if (cells[x+i][x] === this.state.whoseTurn) {
+                    count++;
+                    
+                //If it's not player owned, reset the count because we don't have 4 in a row (yet)
+                } else {
+                    count = 0;
+                }
+    
+                //If we see 4 player owned cells in a row, return true (game is solved)
+                if (count >= 4) {
+                    return true;
+                }
+            }
+        }
+
         return (false);
     }
 
@@ -119,9 +141,11 @@ class Board extends Component {
             return row.slice();
         });
 
-        newCells[this.state.height[x]][x] = this.state.whoseTurn;
+        newCells[x][this.state.height[x]] = this.state.whoseTurn;
 
-        console.log(this.isSolved(newCells));
+        if (this.isSolved(newCells)) {
+            alert("Congratulations to Player " + this.state.whoseTurn + "! You won!");
+        }
 
         this.setState({
             cells: newCells.map(row => {

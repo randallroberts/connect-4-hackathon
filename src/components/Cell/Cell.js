@@ -48,6 +48,8 @@ class Cell extends Component {
   render () {
     return (
         <div onClick={this.changeColor.bind(this)} className="cell" style={{backgroundColor: this.state.color}}>
+        {/* //img? */}
+        {(this.props.playerNumber >=0) ? this.props.playerNumber : `X:${this.props.xCoord} Y:${this.props.yCoord}`}
         </div>
     );
   }
